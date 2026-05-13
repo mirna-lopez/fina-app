@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
+:root {
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --bg: #f9f8f6;
+  --bg-card: #ffffff;
+  --bg-sidebar: #1a1a1a;
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --text-sidebar: #e5e5e5;
+  --border: #e8e6e1;
+  --accent: #4a7c6f;
+  --accent-light: #edf4f2;
+  --positive: #4a7c6f;
+  --negative: #c0392b;
+  --pending: #d97706;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --bg-card: #1c1c1a;
+    --bg-sidebar: #0d0d0c;
+    --text: #e8e6e1;
+    --text-muted: #6b7280;
+    --text-sidebar: #e5e5e5;
+    --border: #2a2a28;
+    --accent: #5d9e8f;
+    --accent-light: #1a2e2b;
+    --positive: #5d9e8f;
+    --negative: #e05c4b;
+    --pending: #f59e0b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
