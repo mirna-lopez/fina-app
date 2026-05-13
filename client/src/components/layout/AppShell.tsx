@@ -1,4 +1,3 @@
-import { useState } from 'react'
 
 const navItems = [
   { label: 'Dashboard', icon: '◈', href: '#' },
@@ -8,8 +7,13 @@ const navItems = [
   { label: 'Settings', icon: '◎', href: '#' },
 ]
 
-export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [active, setActive] = useState('Dashboard')
+interface AppShellProps {
+  children: React.ReactNode
+  activePage: string
+  onNavigate: (page: string) => void
+}
+
+export default function AppShell({ children, activePage, onNavigate }: AppShellProps) {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <aside style={{ width: '220px', background: 'var(--bg-sidebar)', display: 'flex', flexDirection: 'column', padding: '32px 0', position: 'fixed', top: 0, left: 0, height: '100vh', zIndex: 10 }}>
@@ -22,18 +26,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <a
               key={item.label}
               href={item.href}
-              onClick={() => setActive(item.label)}
+              onClick={() => onNavigate(item.label)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
                 padding: '11px 24px',
-                color: active === item.label ? '#fff' : '#6b7280',
-                background: active === item.label ? 'rgba(255,255,255,0.06)' : 'transparent',
-                borderLeft: active === item.label ? '2px solid var(--accent)' : '2px solid transparent',
+                color: activePage === item.label ? '#fff' : '#6b7280',
+                background: activePage === item.label ? 'rgba(255,255,255,0.06)' : 'transparent',
+                borderLeft: activePage === item.label ? '2px solid var(--accent)' : '2px solid transparent',
                 textDecoration: 'none',
                 fontSize: '14px',
-                fontWeight: active === item.label ? '500' : '400',
+                fontWeight: activePage === item.label ? '500' : '400',
                 transition: 'all 0.15s ease',
                 cursor: 'pointer',
               }}
