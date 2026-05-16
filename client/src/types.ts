@@ -51,7 +51,7 @@ export interface Bill {
   amount: number
   dueDay: number
   category: BillCategory
-  paidMonths: string[] // ["2026-05", ...]
+  paidMonths: string[]
 }
 
 // ── Debts ──────────────────────────────────────────────────────────────────
@@ -74,5 +74,30 @@ export interface Debt {
   originalBalance: number
   interestRate: number
   minimumPayment: number
-  paidMonths: string[] // ["2026-05", ...]
+  paidMonths: string[]
+}
+
+// ── Accounts ───────────────────────────────────────────────────────────────
+
+export const ACCOUNT_TYPES = [
+  'Checking',
+  'Savings',
+  'Roth IRA',
+  '401k',
+  'Brokerage',
+  'HSA',
+  'Crypto',
+  'Other',
+] as const
+
+export type AccountType = typeof ACCOUNT_TYPES[number]
+
+export interface Account {
+  id: number
+  name: string
+  type: AccountType
+  institution: string | null
+  balance: number
+  previousBalance: number | null
+  annualContribution: number | null
 }

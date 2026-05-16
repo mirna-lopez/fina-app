@@ -1,18 +1,15 @@
 import QuickAdd from '../components/QuickAdd'
-import type { Transaction, NewTransaction } from '../types'
+import type { Account, Transaction, NewTransaction } from '../types'
 
 interface Props {
   transactions: Transaction[]
+  accounts: Account[]
   onAddTransaction: (tx: NewTransaction) => void
 }
 
-const balance = {
-  bank: 3240.50,
-  pending: -184.20,
-  upcoming: -620.00,
-}
-
-const available = balance.bank + balance.pending + balance.upcoming
+const FALLBACK_BANK = 3240.50
+const PENDING = -184.20
+const UPCOMING = -620.00
 
 const bills = [
   { name: 'Rent', due: 'Jun 1', amount: 450.00 },
@@ -25,8 +22,11 @@ function fmt(n: number) {
   return n < 0 ? `-$${abs}` : `$${abs}`
 }
 
-export default function Dashboard({ transactions, onAddTransaction }: Props) {
+export default function Dashboard({ transactions, accounts, onAddTransaction }: Props) {
   const recent = transactions.slice(0, 5)
+
+  const bankBalance = accounts.find(a => a.type === 'Checking')?.balance ?? FALLBACK_BANK
+  const available = bankBalance + PENDING + UPCOMING
 
   return (
     <div style={{ padding: '48px 48px 80px', maxWidth: '900px' }}>
@@ -58,9 +58,9 @@ export default function Dashboard({ transactions, onAddTransaction }: Props) {
         gridTemplateColumns: 'repeat(3, 1fr)',
       }}>
         {[
-          { label: 'Bank Balance', value: balance.bank, note: 'as reported' },
-          { label: 'Pending', value: balance.pending, note: '3 transactions' },
-          { label: 'Upcoming Bills', value: balance.upcoming, note: 'next 30 days' },
+          { label: 'Bank Balance', value: bankBalance, note: 'as reported' },
+          { label: 'Pending',      value: PENDING,      note: '3 transactions' },
+          { label: 'Upcoming Bills', value: UPCOMING,   note: 'next 30 days' },
         ].map((item, i) => (
           <div key={item.label} style={{ padding: '0 24px', borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
