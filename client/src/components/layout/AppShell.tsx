@@ -1,10 +1,11 @@
-
 const navItems = [
   { label: 'Dashboard', icon: '◈', href: '#' },
   { label: 'Transactions', icon: '↕', href: '#' },
+  { label: 'Cards', icon: '▣', href: '#' },
   { label: 'Bills', icon: '◷', href: '#' },
-  { label: 'Accounts', icon: '▣', href: '#' },
-  { label: 'Settings', icon: '◎', href: '#' },
+  { label: 'Debt Planner', icon: '◫', href: '#' },
+  { label: 'Accounts', icon: '◎', href: '#' },
+  { label: 'Settings', icon: '⚙', href: '#' },
 ]
 
 interface AppShellProps {

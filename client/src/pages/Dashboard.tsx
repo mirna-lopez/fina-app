@@ -1,3 +1,11 @@
+import QuickAdd from '../components/QuickAdd'
+import type { Transaction, NewTransaction } from '../types'
+
+interface Props {
+  transactions: Transaction[]
+  onAddTransaction: (tx: NewTransaction) => void
+}
+
 const balance = {
   bank: 3240.50,
   pending: -184.20,
@@ -5,14 +13,6 @@ const balance = {
 }
 
 const available = balance.bank + balance.pending + balance.upcoming
-
-const transactions = [
-  { id: 1, name: 'Whole Foods Market', date: 'Today', amount: -67.43, status: 'pending' },
-  { id: 2, name: 'Direct Deposit — Target', date: 'Yesterday', amount: 892.00, status: 'settled' },
-  { id: 3, name: 'Netflix', date: 'May 11', amount: -17.99, status: 'settled' },
-  { id: 4, name: 'Spotify', date: 'May 10', amount: -11.99, status: 'settled' },
-  { id: 5, name: 'Zelle — Sara', date: 'May 9', amount: -50.00, status: 'settled' },
-]
 
 const bills = [
   { name: 'Rent', due: 'Jun 1', amount: 450.00 },
@@ -25,10 +25,12 @@ function fmt(n: number) {
   return n < 0 ? `-$${abs}` : `$${abs}`
 }
 
-export default function Dashboard() {
+export default function Dashboard({ transactions, onAddTransaction }: Props) {
+  const recent = transactions.slice(0, 5)
+
   return (
     <div style={{ padding: '48px 48px 80px', maxWidth: '900px' }}>
-      <div style={{ marginBottom: '40px' }}>
+      <div style={{ marginBottom: '32px' }}>
         <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px', letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>
           Real Available Balance
         </p>
@@ -43,6 +45,8 @@ export default function Dashboard() {
         </div>
         <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '12px' }}>Updated just now</p>
       </div>
+
+      <QuickAdd onAddTransaction={onAddTransaction} />
 
       <div style={{
         background: 'var(--bg-card)',
@@ -76,8 +80,8 @@ export default function Dashboard() {
             <span style={{ fontSize: '14px', fontWeight: '600' }}>Recent Transactions</span>
             <span style={{ fontSize: '12px', color: 'var(--accent)', cursor: 'pointer' }}>See all</span>
           </div>
-          {transactions.map((tx, i) => (
-            <div key={tx.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', borderBottom: i < transactions.length - 1 ? '1px solid var(--border)' : 'none' }}>
+          {recent.map((tx, i) => (
+            <div key={tx.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', borderBottom: i < recent.length - 1 ? '1px solid var(--border)' : 'none' }}>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '2px' }}>{tx.name}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
