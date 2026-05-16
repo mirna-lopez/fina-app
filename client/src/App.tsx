@@ -5,7 +5,8 @@ import Transactions from './pages/Transactions'
 import Cards from './pages/Cards'
 import Bills from './pages/Bills'
 import DebtPlanner from './pages/DebtPlanner'
-import type { Transaction, NewTransaction, Card, Bill, Debt } from './types'
+import Accounts from './pages/Accounts'
+import type { Transaction, NewTransaction, Card, Bill, Debt, Account } from './types'
 
 const initialTransactions: Transaction[] = [
   { id: 1,  name: 'Whole Foods Market',      category: 'Groceries',     date: 'May 13, 2026', amount:  -67.43, status: 'pending', paymentMethod: 'Amex Gold'  },
@@ -40,12 +41,21 @@ const initialDebts: Debt[] = [
   { id: 3, name: 'Student Loan', type: 'Student Loan', balance: 8200,  originalBalance: 27000, interestRate: 4.5,   minimumPayment: 180, paidMonths: [] },
 ]
 
+const initialAccounts: Account[] = [
+  { id: 1, name: 'Main Checking',      type: 'Checking',  institution: 'Chase',    balance: 3240.50, previousBalance: 2890.00, annualContribution: null },
+  { id: 2, name: 'High-Yield Savings', type: 'Savings',   institution: 'Ally',     balance: 8500.00, previousBalance: 8100.00, annualContribution: null },
+  { id: 3, name: 'Roth IRA',           type: 'Roth IRA',  institution: 'Fidelity', balance: 18200.00, previousBalance: 17800.00, annualContribution: 2500 },
+  { id: 4, name: '401k',               type: '401k',      institution: 'Vanguard', balance: 24600.00, previousBalance: 23900.00, annualContribution: 8750 },
+  { id: 5, name: 'Brokerage',          type: 'Brokerage', institution: 'Robinhood', balance: 4200.00, previousBalance: 3950.00, annualContribution: null },
+]
+
 function App() {
   const [activePage, setActivePage] = useState('Dashboard')
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions)
   const [cards, setCards] = useState<Card[]>(initialCards)
   const [bills, setBills] = useState<Bill[]>(initialBills)
   const [debts, setDebts] = useState<Debt[]>(initialDebts)
+  const [accounts, setAccounts] = useState<Account[]>(initialAccounts)
 
   function onAddTransaction(tx: NewTransaction) {
     setTransactions(prev => [{ ...tx, id: Date.now() }, ...prev])
@@ -79,6 +89,10 @@ function App() {
     }))
   }
 
+  function onAddAccount(account: Omit<Account, 'id'>) {
+    setAccounts(prev => [...prev, { ...account, id: Date.now() }])
+  }
+
   return (
     <AppShell activePage={activePage} onNavigate={setActivePage}>
       {activePage === 'Transactions'
@@ -89,7 +103,9 @@ function App() {
         ? <Bills bills={bills} onAddBill={onAddBill} onToggleBillPaid={onToggleBillPaid} />
         : activePage === 'Debt Planner'
         ? <DebtPlanner debts={debts} onAddDebt={onAddDebt} onToggleDebtPaid={onToggleDebtPaid} />
-        : <Dashboard transactions={transactions} onAddTransaction={onAddTransaction} />
+        : activePage === 'Accounts'
+        ? <Accounts accounts={accounts} debts={debts} onAddAccount={onAddAccount} />
+        : <Dashboard transactions={transactions} accounts={accounts} onAddTransaction={onAddTransaction} />
       }
     </AppShell>
   )
